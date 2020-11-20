@@ -1,0 +1,15 @@
+POST http://localhost/school-reg/src/api/login.php HTTP/1.1
+content-type: application/json
+
+{
+  "email":"johndoe@yahoo.com",
+  "password":"password",
+  "userType":"student"
+}
+###
+POST http://localhost/school-reg/src/api/protected.php HTTP/1.1
+content-type: application/json
+
+{
+  "jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSEVfSVNTVUVSIiwiYXVkIjoiVEhFX0FVRElFTkNFIiwiaWF0IjoxNjA1NjQ1MTI4LCJuYmYiOjE2MDU2NDUxMzgsImV4cCI6MTYwNTY0NTE4OCwiZGF0YSI6eyJpZCI6IjEiLCJmaXJzdG5hbWUiOiJKb2huIiwibGFzdG5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5kb2VAeWFob28uY29tIn19.scbKo13AcVP7MBGHVCWzb7oFop8C0kbRf78ktbYyyg4"
+}
