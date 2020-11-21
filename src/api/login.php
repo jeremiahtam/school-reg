@@ -44,8 +44,8 @@ switch($userType){
         $issuer_claim = "THE_ISSUER"; // this can be the servername
         $audience_claim = "THE_AUDIENCE";
         $issuedat_claim = time(); // issued at
-        $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-        $expire_claim = $issuedat_claim + 6000; // expire time in seconds
+        $notbefore_claim = $issuedat_claim; //not before in seconds
+        $expire_claim = $issuedat_claim + 120; // expire time in seconds
         $token = array(
           "iss" => $issuer_claim,
           "aud" => $audience_claim,
@@ -67,10 +67,8 @@ switch($userType){
           array(
             "error"=>false,
             "message" => "Successful login.",
-            "jwt" => $jwt,
-            "email" => $email,
-            "expireAt" => $expire_claim,
-            "userType"=>$userType
+            "userType"=>$userType,
+            "jwt" => $jwt
           )
         );
       }else{

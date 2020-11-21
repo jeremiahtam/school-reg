@@ -1,23 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {IoMdSchool} from "react-icons/io";
 import DashboardBody from '../../components/DashboardBody'
 import ModalComp from '../../components/ModalComp'
 import {educationData} from '../../data/education'
+import {TokenConfirmation} from '../../functions/TokenConfirmation'
+import {useHistory} from "react-router-dom";
 
 function Education(){
+  const history = useHistory();
+  /* check if the student token is still relevent */
+  useEffect(() => {
+    TokenConfirmation('student').then(data=>{
+      if (data.error===true){
+        return history.push('/student/login')
+      }
+    })
+
+  }, [history])
   /* modal functionality */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
   const handleShow = () => {
-    setShow(true)
-   
+    setShow(true)   
   }
   /* modal type */
   const [modalType, setModalType] = useState('')
   /* modal dataId */
   const [modalDataId, setModalDataId] = useState('')
 
-return(
+  return(
     <DashboardBody>
       <ModalComp
         showModal={show}

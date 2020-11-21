@@ -1,63 +1,25 @@
 import React,{useEffect} from 'react'
-import {Redirect} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {IoIosHome} from "react-icons/io";
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import DashboardBody from '../../components/DashboardBody'
+import {TokenConfirmation} from '../../functions/TokenConfirmation'
 
 const PersonalInfo = () =>{
 
-  // get loginInfo from local storage
-  const loginInfo = JSON.parse(localStorage.getItem('loginInfo'));
+  const history = useHistory();
+  /* check if the student token is still relevent */
+  useEffect(() => {
+    TokenConfirmation('student').then(data=>{
+      if (data.error===true){
+        return history.push('/student/login')
+      }
+    })
 
-  if(loginInfo){
-    const loginToken = loginInfo.loginToken;
-    const userType = loginInfo.userType;
-    //if userType is not a student, redirect
-    if(userType==='student'){
-      if(loginToken){
-        //check if it is still valid
-        fetch('http://localhost/school-reg/src/api/protected.php',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'jwt':loginToken
-          })
-        })
-        .then(res=>res.json())
-        .then(resData=>{
-          if(resData.error===false){
-            // return resData;
-            console.log(resData)
-          }else{
-            //redirect
-            console.log(resData)
-            return <Redirect to='/student/login'/>
-          }
-        })
-        .catch(error=>{
-          console.error('Error:',error)
-          return <Redirect to='/student/login'/>
-        })
-      }else{      
-        //redirect to login page
-        console.log('no login token')
-        return <Redirect to='/student/login'/>
-      }  
-    }else{
-      //redirect to login page
-      console.log('user not student')
-      return <Redirect to='/student/login'/>
-    }
-  }else{
-    //redirect to login page
-    console.log('no data in local storage')
-    return <Redirect to='/student/login'/>
-  }
+  }, [history])
 
-  return(
+ return(
     <DashboardBody>
       <div className="title">
         <span className='text'><IoIosHome/> Personal Information</span>            
