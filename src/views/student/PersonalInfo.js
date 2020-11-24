@@ -1,24 +1,72 @@
-import React,{useEffect} from 'react'
-import {useHistory} from "react-router-dom";
+import React,{useEffect, useState, useCallback} from 'react'
+import {Redirect} from "react-router-dom";
 import {IoIosHome} from "react-icons/io";
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import DashboardBody from '../../components/DashboardBody'
-import {TokenConfirmation} from '../../functions/TokenConfirmation'
+import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
 
 const PersonalInfo = () =>{
-
-  const history = useHistory();
+  /* validate login token */
+  const [loadScreen, setLoadScreen] = useState();
+  const [loginError, setLoginError] = useState();
+  const [loadPersonalInfoData, setLoadPersonalInfoData] = useState(false)
   /* check if the student token is still relevent */
   useEffect(() => {
-    TokenConfirmation('student').then(data=>{
-      if (data.error===true){
-        return history.push('/student/login')
+     tokenConfirmationHandler('student').then(res=>{
+      setLoginError(res.error)
+      if(res.error===true){
+        setLoadScreen(false)
+      }else{        
+        setLoadScreen(true)
       }
     })
+  }, [])
 
-  }, [history])
+  /* get data from database */
+  const getPersonalInfoHandler = useCallback(async()=>{
+      const tokenData = await tokenConfirmationHandler('student');
+      if(tokenData.error===false){
+        const values = {'studentId':tokenData.info.data.id}
+        try{
+          const res = await fetch('http://localhost/school-reg/src/api/get-personal-info.php',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'values':values
+            })
+          })          
+          const resData  = await res.json()
+          if(resData.error===false){
+              return resData
+            }else{
+              return resData
+            }
+        }catch(error){
+          return {
+            'error':true,
+            'message':error
+          };
+        }    
+      }
+    },[],
+  )
+  useEffect(() => {
+    getPersonalInfoHandler().then(i=>{
+      setLoadPersonalInfoData(true)
+      console.log(i)
+    })
+  })
 
+  /* screen render/display */
+  if(loadScreen===undefined) {
+    return null;
+  };
+  if(loginError===true){
+    return <Redirect to='/student/login'/>
+  }
  return(
     <DashboardBody>
       <div className="title">

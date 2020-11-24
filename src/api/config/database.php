@@ -2,22 +2,24 @@
 // used to get mysql database connection
 class DatabaseService{
 
-    private $db_host = "localhost";
-    private $db_name = "school_reg";
-    private $db_user = "root";
-    private $db_password = "";
+    private $host = "localhost";
+    private $dbName = "school_reg";
+    private $user = "root";
+    private $pwd = "";
     private $connection;
 
     public function getConnection(){
-
         $this->connection = null;
-
         try{
-            $this->connection = new PDO("mysql:host=" . $this->db_host . ";dbname=" . $this->db_name, $this->db_user, $this->db_password);
+          $dsn = 'mysql:host='.$this->host.';dbname='.$this->dbName;
+          $pdo = new PDO($dsn, $this->user,$this->pwd);
+          $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+          $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+          $this->connection = $pdo;
+  
         }catch(PDOException $exception){
             echo "Connection failed: " . $exception->getMessage();
         }
-
         return $this->connection;
     }
 }

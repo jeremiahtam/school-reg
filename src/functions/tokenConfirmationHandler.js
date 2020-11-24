@@ -1,4 +1,4 @@
-export async function TokenConfirmation(user) {
+export async function tokenConfirmationHandler(user) {
   /* get loginInfo from local storage */
   const loginInfo = JSON.parse(localStorage.getItem('loginInfo'));
   /* if loginInfo exists */

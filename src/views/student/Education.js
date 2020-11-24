@@ -3,20 +3,24 @@ import {IoMdSchool} from "react-icons/io";
 import DashboardBody from '../../components/DashboardBody'
 import ModalComp from '../../components/ModalComp'
 import {educationData} from '../../data/education'
-import {TokenConfirmation} from '../../functions/TokenConfirmation'
-import {useHistory} from "react-router-dom";
+import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
+import {Redirect} from "react-router-dom";
 
 function Education(){
-  const history = useHistory();
+  /* validate login token */
+  const [loadScreen, setLoadScreen] = useState();
+  const [loginError, setLoginError] = useState();
   /* check if the student token is still relevent */
   useEffect(() => {
-    TokenConfirmation('student').then(data=>{
-      if (data.error===true){
-        return history.push('/student/login')
+    tokenConfirmationHandler('student').then(data=>{
+      setLoginError(data.error)
+      if(data.error===true){
+        setLoadScreen(false)
+      }else{
+        setLoadScreen(true)
       }
     })
-
-  }, [history])
+  }, [])
   /* modal functionality */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
@@ -28,6 +32,13 @@ function Education(){
   /* modal dataId */
   const [modalDataId, setModalDataId] = useState('')
 
+  /* screen render/display */
+  if(loadScreen===undefined) {
+    return null;
+  };
+  if(loginError===true){
+    return <Redirect to='/student/login'/>
+  }
   return(
     <DashboardBody>
       <ModalComp

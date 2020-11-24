@@ -1,5 +1,4 @@
 <?php
-include_once './config/database.php';
 require "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
 
@@ -12,8 +11,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 $secret_key = "YOUR_SECRET_KEY";
 $jwt = null;
-$databaseService = new DatabaseService();
-$conn = $databaseService->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 $jwt = $data->jwt;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{} from 'react'
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -18,8 +18,6 @@ import Status from './views/student/Status'
 import AdminLogin from './views/admin/Login'
 import AdminRetrievePassword from './views/admin/RetrievePassword'
 import AdminChangePassword from './views/admin/ChangePassword'
-
-
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux'
 import navReducer from './store/reducer/nav'
@@ -31,6 +29,7 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 function App() {
+
   return (
     <Provider store={store}>
       <Router>

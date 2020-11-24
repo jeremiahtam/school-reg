@@ -1,20 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardBody from '../../components/DashboardBody'
-import {TokenConfirmation} from '../../functions/TokenConfirmation'
-import {useHistory} from "react-router-dom";
+import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
+import {Redirect} from "react-router-dom";
 import {IoMdInformationCircle} from "react-icons/io";
 
 function Status(){
-  const history = useHistory();
+  /* validate login token */
+  const [loadScreen, setLoadScreen] = useState();
+  const [loginError, setLoginError] = useState();
   /* check if the student token is still relevent */
   useEffect(() => {
-    TokenConfirmation('student').then(data=>{
-      if (data.error===true){
-        return history.push('/student/login')
+    tokenConfirmationHandler('student').then(data=>{
+      setLoginError(data.error)
+      if(data.error===true){
+        setLoadScreen(false)
+      }else{
+        setLoadScreen(true)
       }
     })
+  }, [])
 
-  }, [history])
+  /* screen render/display */
+  if(loadScreen===undefined) {
+    return null;
+  };
+  if(loginError===true){
+    return <Redirect to='/student/login'/>
+  }
   return(
     <DashboardBody>
       <div className="title">
