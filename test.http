@@ -20,3 +20,30 @@ content-type: application/json
 {
   "studentId":1
 }
+###
+POST http://localhost/school-reg/src/api/update-personal-info.php HTTP/1.1
+content-type: application/json
+
+{
+  "studentId":1,
+  "firstName" :"John",
+  "lastName" : "Doe",
+  "guardianName" : "Mr & Mrs Doe",
+  "email" : "johndoe@yahoo.com",
+  "phoneNum" : "0706229287",
+  "address" : "12, GRA"
+}
+###
+POST https://www.schoolpanda.com.ng/sendmail.php HTTP/1.1
+content-type: application/json
+
+{
+  "firstName":"Jeremiah" ,
+  "lastName":"Tam" ,
+  "phone":"0706229287" ,
+  "email":"mama@yahoo.com" ,
+  "company":"Tamflex" ,
+  "companyRole":"Boss" ,
+  "topic":"I am the boss" ,
+  "details":"Nothing more.." 
+}

@@ -13,17 +13,30 @@
       return $result;
     }
     protected function getStudentInfo($email){
-      $sql = "SELECT * FROM users WHERE email = ? AND deleted=? LIMIT 0,1";
+      $sql = "SELECT * FROM users WHERE email = ? AND deleted=?";
       $stmt = $this->getConnection()->prepare($sql);
       $stmt->execute([$email,'no']);
       $result = $stmt->fetch();
       return $result;
     }
     protected function getStudentInfoRows($email){
-      $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND deleted=? LIMIT 0,1";
+      $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND deleted=?";
       $stmt = $this->getConnection()->prepare($sql);
       $stmt->execute([$email,'no']);
       $result = $stmt->fetchColumn();
+      return $result;
+    }
+    protected function getStudentInfoRowsById($id){
+      $sql = "SELECT COUNT(*) FROM users WHERE id = ? AND deleted=?";
+      $stmt = $this->getConnection()->prepare($sql);
+      $stmt->execute([$id,'no']);
+      $result = $stmt->fetchColumn();
+      return $result;
+    }
+    protected function updateStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNum, $email, $id){
+      $sql = "UPDATE users SET first_name=?,last_name=?,guardian_name=?,address=?,phone_num=?,email=? WHERE id = ? AND deleted=?";
+      $stmt = $this->getConnection()->prepare($sql);
+      $result = $stmt->execute([$firstName,$lastName,$guardianName,$address,$phoneNum,$email,$id,'no']);
       return $result;
     }
   }
@@ -63,7 +76,7 @@
       }
     }
     protected function getEducationInfoRows($userId){
-      $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND deleted=?";
+      $sql = "SELECT COUNT(*) FROM education WHERE user_id = ? AND deleted=?";
       $stmt = $this->getConnection()->prepare($sql);
       $stmt->execute([$userId,'no']);
       $result = $stmt->fetchColumn();

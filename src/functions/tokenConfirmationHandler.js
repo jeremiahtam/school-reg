@@ -13,14 +13,15 @@ export async function tokenConfirmationHandler(user) {
         const res = await fetch('http://localhost/school-reg/src/api/protected.php',{
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept' : 'application/json',
+            'Authorization' : `Bearer ${loginToken}`
           },
           body: JSON.stringify({
             'jwt':loginToken
           })
         })
-        const resData  = res.json()
-
+        const resData  = await res.json()
         if(resData.error===false){
             return resData
           }else{

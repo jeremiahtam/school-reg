@@ -33,13 +33,13 @@
       $row = $this->getStudentInfoRows($email);
       return $row;
     }
+    public function studentInfoRowsById($id){
+      $row = $this->getStudentInfoRowsById($id);
+      return $row;
+    }
     public function studentData($id){  
-      try{
-        $row = $this->getStudentData($id);
-        return $row;  
-      }catch(Exception $e){
-        throw new Exception;
-      }
+      $row = $this->getStudentData($id);
+      return $row;  
     }
   }
 

@@ -1,10 +1,11 @@
 <?php
   require_once("model.class.php"); 
-  //---------------------------------------------//
-  //  School Details Controller  
-  //---------------------------------------------//
-  class SchoolDetailsContr extends SchoolDetailsModel{
-    public function editSchoolDetails($formName,$formEmail,$formAddress,$formPhoneNumber,$formWebsite,$date,$time){
-      return $this->updateSchoolDetails($formName,$formEmail,$formAddress,$formPhoneNumber,$formWebsite,$date,$time);
+  //------------------------------------------
+  //  Student Info 
+  //----------------------------------------//
+
+  class GetStudentContr extends GetStudentModel{
+    public function editStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNum, $email, $id){
+      return $this->updateStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNum, $email, $id);
     }
   }

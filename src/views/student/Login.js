@@ -47,7 +47,7 @@ const Login =()=>{
       <div className='container'>
         <div className='row justify-content-center'>
 
-          <div className='col-lg-4 signup-form-box'>
+          <div className='col-sm-8 col-md-6 col-lg-4  login-form-box'>
             <div className="form-heading">Login To Account</div>
             <Formik
               initialValues={

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import {educationData} from '../data/education'
 import {Button, Modal} from 'react-bootstrap'
 
-function ModalComp(props) {
+function EducationModal(props) {
 
   switch(props.type){
     case 'add-education':
@@ -147,4 +147,4 @@ function ModalComp(props) {
   }
 }
 
-export default ModalComp
+export default EducationModal

@@ -11,11 +11,12 @@
   height: 100vh;
   font-family: 'Roboto', sans-serif;  /* font-family: 'Titillium Web', sans-serif; */
 }
-.signup-form-box {
+.signup-form-box,.login-form-box {
   background-color: rgb(255, 255, 255);
   border-radius: 8px;
   padding: 20px;
   margin-top: 20vh;
+  max-width:80%;
 }
 .form-group .label{
   font-weight: 700;
@@ -258,13 +259,14 @@ a.logout:hover {
   font-weight: 700;
   color: #0000008e;
   text-align: center;
+  margin-bottom: 0px;
 }
 #content .card .card-body .personal-info-card-body{
-  padding: 30px 20%;
+  padding: 0px 20%;
 }
 @media (max-width: 768px) {
   #content .card .card-body .personal-info-card-body{
-    padding: 30px 10%;
+    padding: 5px 10%;
   }  
 }
 .personal-info-form .label{
@@ -306,4 +308,15 @@ a.logout:hover {
   ----------------------------------*/
 .education-card-body .add-button{
   margin-bottom: 10px;
+}
+/* ---------------------------------
+  GENERAL 
+  ---------------------------------*/
+.center-spinner{
+  margin:auto;
+}
+.form-feedback-message{
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  font-weight: 600;
 }

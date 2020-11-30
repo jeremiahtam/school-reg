@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {IoMdSchool} from "react-icons/io";
 import DashboardBody from '../../components/DashboardBody'
-import ModalComp from '../../components/ModalComp'
+import EducationModal from '../../components/EducationModal'
 import {educationData} from '../../data/education'
 import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
 import {Redirect} from "react-router-dom";
@@ -34,14 +34,14 @@ function Education(){
 
   /* screen render/display */
   if(loadScreen===undefined) {
-    return null;
+    //return null;
   };
   if(loginError===true){
     return <Redirect to='/student/login'/>
   }
   return(
     <DashboardBody>
-      <ModalComp
+      <EducationModal
         showModal={show}
         closeModalAction={handleClose}
         type={modalType}
@@ -51,6 +51,8 @@ function Education(){
         <span className='text'><IoMdSchool/> Education</span>            
       </div>
       <div className='card'>
+        {loadScreen ?
+        <>
         <div className='card-title'>Education History</div>
         <div className='card-body'>
           <div className='education-card-body'>
@@ -108,7 +110,13 @@ function Education(){
                     
             </div>
           </div>
-        </div>              
+        </div>
+        </>
+        :
+        <>
+          <span className="spinner-border spinner-border-sm center-spinner" role="status" aria-hidden="true"></span>   
+        </>
+        }
       </div>
     </DashboardBody>
   )
