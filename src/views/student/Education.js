@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {IoMdSchool} from "react-icons/io";
-import DashboardBody from '../../components/DashboardBody'
-import EducationModal from '../../components/EducationModal'
-import {educationData} from '../../data/education'
-import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
+import DashboardBody from '../../components/DashboardBody';
+import EducationModal from '../../components/EducationModal';
+import {educationData} from '../../data/education';
+import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler';
 import {Redirect} from "react-router-dom";
 
 function Education(){
