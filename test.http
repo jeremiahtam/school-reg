@@ -14,36 +14,32 @@ content-type: application/json
   "jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSEVfSVNTVUVSIiwiYXVkIjoiVEhFX0FVRElFTkNFIiwiaWF0IjoxNjA1NjQ1MTI4LCJuYmYiOjE2MDU2NDUxMzgsImV4cCI6MTYwNTY0NTE4OCwiZGF0YSI6eyJpZCI6IjEiLCJmaXJzdG5hbWUiOiJKb2huIiwibGFzdG5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5kb2VAeWFob28uY29tIn19.scbKo13AcVP7MBGHVCWzb7oFop8C0kbRf78ktbYyyg4"
 }
 ###
-POST http://localhost/school-reg/src/api/get-personal-info.php HTTP/1.1
-content-type: application/json
-
-{
-  "studentId":1
-}
-###
-POST http://localhost/school-reg/src/api/update-personal-info.php HTTP/1.1
+POST http://localhost/school-reg/src/api/personal-info-action.php HTTP/1.1
 content-type: application/json
 
 {
   "studentId":1,
+  "actionType":"get-personal-info"
+}
+###
+POST http://localhost/school-reg/src/api/personal-info-action.php HTTP/1.1
+content-type: application/json
+
+{
+  "studentId":1,
+  "actionType":"update-personal-info",
   "firstName" :"John",
   "lastName" : "Doe",
   "guardianName" : "Mr & Mrs Doe",
   "email" : "johndoe@yahoo.com",
-  "phoneNum" : "0706229287",
+  "phoneNumber" : "0706229287",
   "address" : "12, GRA"
 }
 ###
-POST https://www.schoolpanda.com.ng/sendmail.php HTTP/1.1
+POST http://localhost/school-reg/src/api/education-action.php HTTP/1.1
 content-type: application/json
 
 {
-  "firstName":"Jeremiah" ,
-  "lastName":"Tam" ,
-  "phone":"0706229287" ,
-  "email":"mama@yahoo.com" ,
-  "company":"Tamflex" ,
-  "companyRole":"Boss" ,
-  "topic":"I am the boss" ,
-  "details":"Nothing more.." 
+  "studentId":"1",
+  "actionType":"get-education-data"
 }

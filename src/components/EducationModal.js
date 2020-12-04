@@ -1,15 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {educationData} from '../data/education'
 import {Button, Modal} from 'react-bootstrap'
 import DatePickerField from "./DatePickerField";
 import "react-datepicker/dist/react-datepicker.css";
+import {tokenConfirmationHandler} from '../functions/tokenConfirmationHandler';
  
 
 function EducationModal(props) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  
+  const {loginErrorStatus} = props;
+  /* send data to database */
+  const addEducationHandler = useCallback(async(values, setSubmitting)=>{
+    const tokenData = await tokenConfirmationHandler('student');
+    /* send login error status to Education page */
+    loginErrorStatus(tokenData.error);
+    if(tokenData.error===false){
+      values = {...values,...{
+          'studentId' : tokenData.info.data.id,
+          'actionType' : 'add-education-entry'
+        }
+      };
+      try{
+        const res = await fetch('http://localhost/school-reg/src/api/education-action.php',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        })
+        const resData  = await res.json()
+        if(resData.error===false){
+          setSubmitting(false);
+          return resData
+        }else{
+          setSubmitting(false);
+          return resData
+        }
+      }catch(error){
+        setSubmitting(false);
+        return {
+          'error':true,
+          'message':'Fetch Error: '+error
+        };
+      }
+    }
+    setSubmitting(false);
+  },[loginErrorStatus])
 
   switch(props.type){
     case 'add-education':      
@@ -32,10 +72,9 @@ function EducationModal(props) {
               startDate: Yup.string().required('Enter start date'),
               endDate: Yup.string().required('Enter graduation date')
             })}
-            onSubmit={(values, { setSubmitting }) => {                    
+            onSubmit={(values, { setSubmitting }) => {     
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
+                addEducationHandler(values,setSubmitting)
               }, 400);
             }
           }
@@ -58,21 +97,23 @@ function EducationModal(props) {
                     <label className='modal-form-label'>Start Date</label>
                     <DatePickerField 
                       name="startDate" disabled={isSubmitting} type="text" className="form-control" 
-                      placeholderText="Start Date"
+                      placeholderText="DD/MM/YYYY"
                       selected={startDate}
                       onChange={date => setStartDate(date)}
+                      maxDate={new Date()}
                     />  
                     <div className="form-error">
                       <ErrorMessage name="startDate" />  
                     </div>            
                   </div>
                   <div className="form-group col-sm-6">
-                    <label className='modal-form-label'>Start Date</label>
+                    <label className='modal-form-label'>End Date</label>
                     <DatePickerField 
                       name="endDate" disabled={isSubmitting} type="text" className="form-control" 
-                      placeholderText="End Date"
+                      placeholderText="DD/MM/YYYY"
                       selected={endDate}
                       onChange={date => setEndDate(date)}
+                      maxDate={new Date()}
                     />
                     <div className="form-error">
                       <ErrorMessage name="endDate" />  

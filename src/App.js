@@ -21,10 +21,12 @@ import AdminChangePassword from './views/admin/ChangePassword'
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux'
 import navReducer from './store/reducer/nav'
+import educationReducer from './store/reducer/education'
 import ReduxThunk from 'redux-thunk'
 
 const rootReducer = combineReducers({
-  navToggle:navReducer
+  navToggle:navReducer,
+  education:educationReducer
 })
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 

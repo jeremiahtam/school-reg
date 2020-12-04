@@ -35,9 +35,12 @@ const PersonalInfo = () =>{
       const tokenData = await tokenConfirmationHandler('student');
       setLoginError(tokenData.error)
       if(tokenData.error===false){
-        const values = {'studentId' : tokenData.info.data.id};
+        const values = {
+          'studentId' : tokenData.info.data.id,
+          'actionType':'get-personal-info'
+        };
         try{
-          const res = await fetch('http://localhost/school-reg/src/api/get-personal-info.php',{
+          const res = await fetch('http://localhost/school-reg/src/api/personal-info-action.php',{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -57,8 +60,7 @@ const PersonalInfo = () =>{
           };
         }    
       }
-    },[],
-  )
+    },[])
   useEffect(() => {
     getPersonalInfoHandler().then(info=>{
       if(info && !info.error){
@@ -77,9 +79,14 @@ const PersonalInfo = () =>{
     const tokenData = await tokenConfirmationHandler('student');
     setLoginError(tokenData.error)
     if(tokenData.error===false){
-      values = {...values,...{'studentId' : tokenData.info.data.id}};
+      values = {
+        ...values,...{
+          'studentId' : tokenData.info.data.id,
+          'actionType':'update-personal-info'
+        }
+      };
       try{
-        const res = await fetch('http://localhost/school-reg/src/api/update-personal-info.php',{
+        const res = await fetch('http://localhost/school-reg/src/api/personal-info-action.php',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -101,11 +108,9 @@ const PersonalInfo = () =>{
           'message':'Fetch Error: '+error
         };
       }
-
     }
     setSubmitting(false);
-  },[],
-)
+  },[])
 
   /* screen render/display */
   /* if(loadScreen===undefined) {

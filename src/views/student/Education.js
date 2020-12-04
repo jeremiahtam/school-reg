@@ -5,6 +5,8 @@ import EducationModal from '../../components/EducationModal';
 import {educationData} from '../../data/education';
 import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler';
 import {Redirect} from "react-router-dom";
+import {fetchEducationData} from '../../store/actions/education'
+import { useDispatch} from 'react-redux'
 
 function Education(){
   /* validate login token */
@@ -21,6 +23,12 @@ function Education(){
       }
     })
   }, [])
+  /*get student id */
+
+  /* fetch all education history of applicant */
+   const dispatch = useDispatch();
+   dispatch(fetchEducationData())
+
   /* modal functionality */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
@@ -31,7 +39,10 @@ function Education(){
   const [modalType, setModalType] = useState('')
   /* modal dataId */
   const [modalDataId, setModalDataId] = useState('')
-
+  /* set login error when validation is carried out in a modal */
+  function loginStatusHandler(e){
+    setLoginError(e)
+  }
   /* screen render/display */
   if(loadScreen===undefined) {
     //return null;
@@ -46,6 +57,7 @@ function Education(){
         closeModalAction={handleClose}
         type={modalType}
         dataId={modalDataId}
+        loginErrorStatus={loginStatusHandler}
       />
       <div className="title">
         <span className='text'><IoMdSchool/> Education</span>            
@@ -57,13 +69,15 @@ function Education(){
         <div className='card-body'>
           <div className='education-card-body'>
             <div className='row'>
-              <button onClick={
-                  ()=>{
+              <button onClick={()=>{
                     setModalType('add-education')/* set modalType */
                     handleShow();
                   }
                 } 
-                className='add-button btn btn-sm btn-outline-dark' data-toggle='modal' data-target='#modal'>Add</button>
+                className='add-button btn btn-sm btn-outline-dark' data-toggle='modal' 
+                data-target='#modal'>
+                Add
+              </button>
             </div>
             <div className='row'>
               <div className='table-responsive'>
