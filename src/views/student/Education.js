@@ -53,7 +53,7 @@ function Education(){
   }
   return(
     <DashboardBody>
-      {show & userEduData!=='' &&
+      {(show & userEduData!=='') ?
         <EducationModal
           showModal={show}
           closeModalAction={handleClose}
@@ -61,7 +61,8 @@ function Education(){
           dataId={modalDataId}
           allEduData={studentEduData? studentEduData : ''}
           loginErrorStatus={loginStatusHandler}
-      />}
+        />:''
+      }
       <div className="title">
         <span className='text'><IoMdSchool/> Education</span>            
       </div>
