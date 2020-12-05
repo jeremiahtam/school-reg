@@ -72,7 +72,7 @@
         $result = $stmt->fetchAll();
         return $result;  
       }catch(Exception $e){
-        throw new Exception;
+        throw $e;
       }
     }
     protected function getEducationInfoRows($userId){

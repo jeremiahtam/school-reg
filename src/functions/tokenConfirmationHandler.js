@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export async function tokenConfirmationHandler(user) {
   /* get loginInfo from local storage */
   const loginInfo = JSON.parse(localStorage.getItem('loginInfo'));
@@ -10,18 +12,19 @@ export async function tokenConfirmationHandler(user) {
       if(loginToken){
         try{
         /* check if it is still valid */
-        const res = await fetch('http://localhost/school-reg/src/api/protected.php',{
+        const res = await axios({
+          url:'http://localhost/school-reg/src/api/protected.php',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept' : 'application/json',
-            'Authorization' : `Bearer ${loginToken}`
+            'Authorization' : `JWT ${loginToken}`
           },
-          body: JSON.stringify({
+          data: {
             'jwt':loginToken
-          })
+          }
         })
-        const resData  = await res.json()
+        const resData  = await res.data
         if(resData.error===false){
             return resData
           }else{

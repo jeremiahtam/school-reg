@@ -5,6 +5,7 @@ import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import DashboardBody from '../../components/DashboardBody'
 import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler'
+import axios from 'axios'
 
 const PersonalInfo = () =>{
   /* validate login token */
@@ -40,14 +41,15 @@ const PersonalInfo = () =>{
           'actionType':'get-personal-info'
         };
         try{
-          const res = await fetch('http://localhost/school-reg/src/api/personal-info-action.php',{
+          const res = await axios({
+            url:'http://localhost/school-reg/src/api/personal-info-action.php',
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(values)
-          })          
-          const resData  = await res.json()
+            data: values
+          })
+          const resData  = await res.data
           if(resData.error===false){
             return resData
           }else{
@@ -86,14 +88,15 @@ const PersonalInfo = () =>{
         }
       };
       try{
-        const res = await fetch('http://localhost/school-reg/src/api/personal-info-action.php',{
+        const res = await axios({
+          url:'http://localhost/school-reg/src/api/personal-info-action.php',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(values)
+          data: values
         })
-        const resData  = await res.json()
+        const resData  = await res.data
         if(resData.error===false){
           setSubmitting(false);
           return resData

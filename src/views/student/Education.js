@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react'
 import {IoMdSchool} from "react-icons/io";
 import DashboardBody from '../../components/DashboardBody';
 import EducationModal from '../../components/EducationModal';
-import {educationData} from '../../data/education';
 import {tokenConfirmationHandler} from '../../functions/tokenConfirmationHandler';
 import {Redirect} from "react-router-dom";
 import {fetchEducationData} from '../../store/actions/education'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 
 function Education(){
+
+  const dispatch = useDispatch();
+  const userEduData = useSelector((state) => state.education.educationData); //get all edu data of user
+  const studentEduData = userEduData.data;
   /* validate login token */
   const [loadScreen, setLoadScreen] = useState();
   const [loginError, setLoginError] = useState();
+
   /* check if the student token is still relevent */
   useEffect(() => {
     tokenConfirmationHandler('student').then(data=>{
@@ -20,20 +24,17 @@ function Education(){
         setLoadScreen(false)
       }else{
         setLoadScreen(true)
+        /* get all education info of user on initial login */
+        dispatch(fetchEducationData(data.info.data.id))
       }
     })
-  }, [])
-  /*get student id */
-
-  /* fetch all education history of applicant */
-   const dispatch = useDispatch();
-   dispatch(fetchEducationData())
+  },[dispatch])
 
   /* modal functionality */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
   const handleShow = () => {
-    setShow(true)   
+    setShow(true)
   }
   /* modal type */
   const [modalType, setModalType] = useState('')
@@ -52,13 +53,15 @@ function Education(){
   }
   return(
     <DashboardBody>
-      <EducationModal
-        showModal={show}
-        closeModalAction={handleClose}
-        type={modalType}
-        dataId={modalDataId}
-        loginErrorStatus={loginStatusHandler}
-      />
+      {show & userEduData!=='' &&
+        <EducationModal
+          showModal={show}
+          closeModalAction={handleClose}
+          type={modalType}
+          dataId={modalDataId}
+          allEduData={studentEduData? studentEduData : ''}
+          loginErrorStatus={loginStatusHandler}
+      />}
       <div className="title">
         <span className='text'><IoMdSchool/> Education</span>            
       </div>
@@ -80,6 +83,7 @@ function Education(){
               </button>
             </div>
             <div className='row'>
+            {studentEduData && 
               <div className='table-responsive'>
                 <table className='table table-hover table-sm table-bordered'>
                   <thead className='thead-light'>
@@ -93,7 +97,7 @@ function Education(){
                     </tr>
                   </thead>
                   <tbody>
-                    {educationData.map((edu,index) =>{
+                    {studentEduData.map((edu,index) =>{
                       return(
                         <tr key={edu.id}>
                           <td>{index + 1}</td>
@@ -121,6 +125,7 @@ function Education(){
                 </table>
 
               </div>
+            }
                     
             </div>
           </div>

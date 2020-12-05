@@ -112,7 +112,26 @@ switch($actionType){
   break;
   
   case 'get-education-data':
-  $output['data']='it is working';
+  
+  $studentId = $data->studentId;
+
+  $getEducationView = new GetEducationView();
+  $eduRow = $getEducationView->studentEducation($studentId);
+
+  foreach($eduRow as $row){
+    $response[] = array(
+      'id'=>html_entity_decode($row['id']),
+      'userId'=>html_entity_decode($row['user_id']),
+      'schoolName'=>html_entity_decode($row['school_name']),
+      'startDate'=>html_entity_decode($row['start_date']),
+      'endDate'=>html_entity_decode($row['end_date'])
+    );
+  }  
+  //$response = (object) $response;
+
+  $output['error'] = false ;
+  $output['message'] = "Successfully retrieved student's education history" ;
+  $output['data'] = $response ;
   
   break;
   

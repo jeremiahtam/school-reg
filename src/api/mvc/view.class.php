@@ -52,7 +52,7 @@
         $row = $this->getEducationInfo($userId);
         return $row;  
       }catch(Exception $e){
-        throw new Exception;
+        throw $e;
       }
     }
   }

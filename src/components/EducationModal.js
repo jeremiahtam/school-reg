@@ -1,14 +1,18 @@
 import React, { useState, useCallback } from 'react'
 import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import {educationData} from '../data/education'
 import {Button, Modal} from 'react-bootstrap'
 import DatePickerField from "./DatePickerField";
 import "react-datepicker/dist/react-datepicker.css";
 import {tokenConfirmationHandler} from '../functions/tokenConfirmationHandler';
- 
+import axios from 'axios'
 
 function EducationModal(props) {
+  const allEduData = props.allEduData; // all the user's education data inputed [array]
+  const itemId = props.dataId; //id of item selected to be edited or deleted
+  const itemData = allEduData.find(i =>itemId === i.id); //full info of the selected item [object]
+
+  /* date selector states */
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   
@@ -25,14 +29,15 @@ function EducationModal(props) {
         }
       };
       try{
-        const res = await fetch('http://localhost/school-reg/src/api/education-action.php',{
+        const res = await axios({
+          url:'http://localhost/school-reg/src/api/education-action.php',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(values)
+          data: values
         })
-        const resData  = await res.json()
+        const resData  = await res.data
         if(resData.error===false){
           setSubmitting(false);
           return resData
@@ -61,9 +66,9 @@ function EducationModal(props) {
           <Formik
             initialValues={
               { 
-                schoolName: '' ,
+                schoolName:'' ,
                 startDate:'',
-                endDate: '' 
+                endDate: ''
               }
             }
             enableReinitialize={true}
@@ -146,8 +151,6 @@ function EducationModal(props) {
         </Modal>
       )
       case 'edit-education':
-        /* Get information about the data to be edited */
-        const editedData = educationData.find(data=>data.id === props.dataId)
 
         return (
           <Modal show={props.showModal} onHide={props.closeModalAction}>
@@ -157,10 +160,10 @@ function EducationModal(props) {
             <Formik
               initialValues={
                 { 
-                  schoolName: '' ,
-                  startDate:'',
-                  endDate: '' 
-                }}
+                  schoolName: itemData ? itemData.schoolName :'' ,
+                  startDate: itemData ? itemData.startDate:'',
+                  endDate: itemData ? itemData.endDate:''
+                  }}
                 validationSchema={Yup.object({
                   schoolName: Yup.string().required('Enter the school name'),
                   startDate: Yup.string().required('Enter start date'),
@@ -183,7 +186,6 @@ function EducationModal(props) {
                     <div className="form-group">
                       <label className='modal-form-label'>Name of school</label>
                       <Field name="schoolName" disabled={isSubmitting} type='text' className="form-control" placeholder="School Name"
-                        value={editedData.schoolName}
                       />
                       <div className="form-error">
                         <ErrorMessage name="schoolName" />  
@@ -193,17 +195,25 @@ function EducationModal(props) {
                     <div className="form-row">
                       <div className="form-group col-sm-6">
                         <label className='modal-form-label'>Start Date</label>
-                        <Field name="startDate" disabled={isSubmitting} type="text" className="form-control" placeholder="Start Date"
-                          value={editedData.startDate}
-                        />
+                        <DatePickerField 
+                          name="startDate" disabled={isSubmitting} type="text" className="form-control" 
+                          placeholderText="DD/MM/YYYY"
+                          selected={startDate}
+                          onChange={date => setStartDate(date)}
+                          maxDate={new Date()}
+                        />  
                         <div className="form-error">
                           <ErrorMessage name="startDate" />  
                         </div>            
                       </div>
                       <div className="form-group col-sm-6">
                         <label className='modal-form-label'>Start Date</label>
-                        <Field name="endDate" disabled={isSubmitting} type="text" className="form-control" placeholder="End Date"
-                          value={editedData.endDate}
+                        <DatePickerField 
+                          name="endDate" disabled={isSubmitting} type="text" className="form-control" 
+                          placeholderText="DD/MM/YYYY"
+                          selected={endDate}
+                          onChange={date => setEndDate(date)}
+                          maxDate={new Date()}
                         />
                         <div className="form-error">
                           <ErrorMessage name="endDate" />  
