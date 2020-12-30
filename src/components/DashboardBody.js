@@ -8,7 +8,7 @@ const DashboardBody = (props) => {
   return (
     <div className={"wrapper"}>
       <SideBarNav/>
-    <div id="content" className={'bg-light '+navToggleClass}>
+    <div id="content" className={navToggleClass}>
       <TopNav/>
           {props.children}
       </div>      

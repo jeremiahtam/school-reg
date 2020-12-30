@@ -8,9 +8,9 @@ function Register(){
   return(
     <div className={`body`}>
       <div className={`container`}>
-        <div className={`row justify-content-center`}>
+        <div className='row justify-content-center'>
 
-          <div className={`col-lg-4 signup-form-box`}>
+          <div className='ccol-sm-8 col-md-6 col-lg-4 signup-form-box'>
             <div className="form-heading">Register Here</div>
             <Formik
               initialValues={
@@ -64,14 +64,14 @@ function Register(){
               props,
             }) => (
               <Form method="POST" id="login-form-student" name="login-form-student">
-                <div className="form-row">
-                  <div className="col">                  
+                <div className="row">
+                  <div className="form-group col-sm-12 col-md-6">                  
                     <Field name="firstName" disabled={isSubmitting} className="form-control" type="text" placeholder="First Name" />
                     <div className="form-error">
                       <ErrorMessage name="firstName" />              
                     </div>
                   </div>
-                  <div className="col">                
+                  <div className="form-group col-sm-12 col-md-6">                
                     <Field name="lastName" disabled={isSubmitting} className="form-control" type="text" placeholder="Last Name" />
                     <div className="form-error">
                       <ErrorMessage name="lastName" />
@@ -86,14 +86,14 @@ function Register(){
                   </div>            
                 </div>
 
-                <div className="form-row">
-                  <div className="col">                  
+                <div className="row">
+                  <div className="form-group col-sm-12 col-md-6">                  
                     <Field name="password" disabled={isSubmitting} className="form-control" type="password" placeholder="Password" />
                     <div className="form-error">
                       <ErrorMessage name="password" />              
                     </div>
                   </div>
-                  <div className="col">                
+                  <div className="form-group col-sm-12 col-md-6">                
                     <Field name="confirmPassword" disabled={isSubmitting} className="form-control" type="password" placeholder="Confirm Password" />
                     <div className="form-error">
                       <ErrorMessage name="confirmPassword" />
@@ -109,7 +109,7 @@ function Register(){
                 </div>
                 
                 <button 
-                  className="btn btn-primary btn-block btn-lg" 
+                  className="btn btn-primary btn-block" 
                   type="submit" 
                   disabled={isSubmitting}
                 >

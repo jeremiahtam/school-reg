@@ -9,7 +9,7 @@ const DatePickerField = ({ ...props }) => {
     <DatePicker
       {...field}
       {...props}
-      dateFormat="dd/MM/yyyy"
+      dateFormat="yyyy-MM-dd"
       selected={(field.value && new Date(field.value)) || null}
       onChange={val => {
         setFieldValue(field.name, val);

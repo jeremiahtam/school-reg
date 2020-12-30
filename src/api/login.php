@@ -24,17 +24,17 @@ $userType = $data->userType;
 switch($userType){
   case 'student':
 
-    $getStudentView = new GetStudentView();
-    $numRows = $getStudentView->studentInfoRows($email);
+    $studentView = new StudentView();
+    $numRows = $studentView->studentInfoRows($email);
     
     if($numRows > 0){
-      $getStudentView->studentInfo($email);
+      $studentView->studentInfo($email);
     
-      $dbId = $getStudentView->id;
-      $dbPassword = $getStudentView->password;
-      $dbFirstname = $getStudentView->firstName;
-      $dbLastname = $getStudentView->lastName;
-      $dbEmail = $getStudentView->email;
+      $dbId = $studentView->id;
+      $dbPassword = $studentView->password;
+      $dbFirstname = $studentView->firstName;
+      $dbLastname = $studentView->lastName;
+      $dbEmail = $studentView->email;
 
       if(password_verify($password, $dbPassword)) {
         $secret_key = "YOUR_SECRET_KEY";

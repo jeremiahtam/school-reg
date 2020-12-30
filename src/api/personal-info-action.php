@@ -13,6 +13,8 @@ $output = array(
   "message" => '',
   "data" => ''
 );
+$date = date('Y-m-d');
+$time = date('H:i:s');
 
 $actionType = '';
 $data = json_decode(file_get_contents("php://input"));
@@ -24,10 +26,10 @@ switch($actionType){
   case 'get-personal-info':
     $studentId = $data->studentId;
     try{
-      $getStudentView = new GetStudentView();
-      $studentRow = $getStudentView->studentData($studentId);  
+      $studentView = new StudentView();
+      $studentRow = $studentView->studentData($studentId);  
     
-      $studentNumRows = $getStudentView->studentInfoRowsById($studentId);
+      $studentNumRows = $studentView->studentInfoRowsById($studentId);
     
       if($studentNumRows==0){
         $output['error'] = true;
@@ -78,8 +80,8 @@ switch($actionType){
     $address = $data->address;
     
     try{
-      $getStudentView = new GetStudentView();
-      $studentNumRows = $getStudentView->studentInfoRowsById($studentId);
+      $studentView = new StudentView();
+      $studentNumRows = $studentView->studentInfoRowsById($studentId);
     
       if($studentNumRows==0){
         $output['error'] = true;
@@ -90,8 +92,8 @@ switch($actionType){
         $output['message'] = 'More than one exists having same id';
         $output['data'] = 'Please contact backend engineer';
       }else{
-        $getStudentContr = new GetStudentContr();
-        $updateStudentRow = $getStudentContr->editStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNumber, $email, $studentId);  
+        $studentContr = new StudentContr();
+        $updateStudentRow = $studentContr->editStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNumber, $email, $date, $time, $studentId);
         if($updateStudentRow){
           $output['error'] = false;
           $output['message'] = 'Your personal information was successfully updated';

@@ -8,15 +8,16 @@
 ----------------------------------------------------- */
 .body{
   background-color: rgb(4, 70, 121);
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 15vh;
   font-family: 'Roboto', sans-serif;  /* font-family: 'Titillium Web', sans-serif; */
 }
 .signup-form-box,.login-form-box {
   background-color: rgb(255, 255, 255);
   border-radius: 8px;
   padding: 20px;
-  margin-top: 20vh;
-  max-width:80%;
+  margin-top: 15vh;
+  max-width:90%;
 }
 .form-group .label{
   font-weight: 700;
@@ -48,6 +49,9 @@
   color: rgba(4, 70, 121, 0.808);
   font-size: 0.9em;
   font-weight: 700;
+}
+.form-extras span{
+  margin-top:10px;
 }
 .form-extras a{
   color: rgba(4, 70, 121, 0.596);
@@ -121,7 +125,8 @@ border:1px rgb(238, 238, 238) solid;
   left: 0;
   height: 100vh;
   z-index: 999;
-  background-color:rgb(0, 36, 63);
+  /* background-color:rgb(0, 36, 63); */
+  background-color: rgb(4, 70, 121);
   color: rgb(131, 131, 131);
   transition: all 0.3s;
   border-right: 1px solid #eee;
@@ -135,7 +140,8 @@ border:1px rgb(238, 238, 238) solid;
 #sidebar .sidebar-header {
   font-size: 0.9em;
   padding: 10px;
-  background: rgb(26, 63, 92); 
+  background-color: rgb(5, 87, 150);
+/*   background: rgb(26, 63, 92);  */
   color: #fff;
   font-weight: 500;
 }
@@ -309,14 +315,28 @@ a.logout:hover {
 .education-card-body .add-button{
   margin-bottom: 10px;
 }
+.edu-action{
+  cursor:pointer;
+}
 /* ---------------------------------
   GENERAL 
   ---------------------------------*/
 .center-spinner{
   margin:auto;
 }
+.modal-spinner{
+  margin:auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 .form-feedback-message{
   margin-bottom: 10px;
   font-size: 0.9em;
   font-weight: 600;
+}
+/* ---------------------------------
+  DATEPICKER 
+  ---------------------------------*/
+.react-datepicker-wrapper{
+  display:block !important;
 }

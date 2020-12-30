@@ -16,7 +16,7 @@ function Education(){
   const [loadScreen, setLoadScreen] = useState();
   const [loginError, setLoginError] = useState();
 
-  /* check if the student token is still relevent */
+  /* check if the student login token is still relevent */
   useEffect(() => {
     tokenConfirmationHandler('student').then(data=>{
       setLoginError(data.error)
@@ -28,6 +28,10 @@ function Education(){
         dispatch(fetchEducationData(data.info.data.id))
       }
     })
+    //cleanup function
+    return () => { 
+      setLoadScreen(true)
+     };
   },[dispatch])
 
   /* modal functionality */
@@ -36,10 +40,10 @@ function Education(){
   const handleShow = () => {
     setShow(true)
   }
-  /* modal type */
-  const [modalType, setModalType] = useState('')
-  /* modal dataId */
-  const [modalDataId, setModalDataId] = useState('')
+  
+  const [modalType, setModalType] = useState('') /* modal type */
+  const [modalDataId, setModalDataId] = useState('') /* modal dataId */
+
   /* set login error when validation is carried out in a modal */
   function loginStatusHandler(e){
     setLoginError(e)
@@ -78,7 +82,7 @@ function Education(){
                     handleShow();
                   }
                 } 
-                className='add-button btn btn-sm btn-outline-dark' data-toggle='modal' 
+                className='add-button btn btn-sm btn-outline-primary' data-toggle='modal' 
                 data-target='#modal'>
                 Add
               </button>
@@ -105,15 +109,13 @@ function Education(){
                           <td>{edu.schoolName}</td>
                           <td>{edu.startDate}</td>
                           <td>{edu.endDate}</td>
-                          <td><div onClick={
-                            ()=>{
+                          <td><div className='edu-action' onClick={()=>{
                               handleShow();
                               setModalType('edit-education')
                               setModalDataId(edu.id)
                             }
                           }>Edit</div></td>
-                          <td><div onClick={
-                            ()=>{
+                          <td><div className='edu-action' onClick={()=>{
                               handleShow();
                               setModalType('delete-education')
                               setModalDataId(edu.id)

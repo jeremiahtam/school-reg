@@ -18,7 +18,7 @@ export async function tokenConfirmationHandler(user) {
           headers: {
             'Content-Type': 'application/json',
             'Accept' : 'application/json',
-            'Authorization' : `JWT ${loginToken}`
+            'Authorization' : `Bearer ${loginToken}`
           },
           data: {
             'jwt':loginToken

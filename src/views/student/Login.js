@@ -92,7 +92,7 @@ const Login =()=>{
                 </div>
 
                 <button 
-                  className="btn btn-primary btn-block btn-lg" 
+                  className="btn btn-primary btn-block" 
                   type="submit" 
                   disabled={isSubmitting}
                 >

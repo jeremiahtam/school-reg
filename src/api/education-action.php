@@ -13,6 +13,9 @@ $output = array(
   "message" => '',
   "data" => ''
 );
+$date = date('Y-m-d');
+$time = date('H:i:s');
+
 $actionType = '';
 $data = json_decode(file_get_contents("php://input"));
 $actionType = $data->actionType;
@@ -21,85 +24,66 @@ $actionType = $data->actionType;
 switch($actionType){
   /* add education entry of a user to database*/
   case 'add-education-entry':
-    $studentId = $data->studentId;
+
+    $userId = $data->studentId;
+    $schoolName = $data->schoolName;
+    $startDate = $data->startDate;
+    $endDate = $data->endDate;
+    $deleted = 'no';
+
     try{
-      $getStudentView = new GetStudentView();
-      $studentRow = $getStudentView->studentData($studentId);  
+      $educationContr = new EducationContr();
+      $insertEducation = $educationContr->addEducation($userId,$schoolName,$startDate,$endDate,$deleted,$date,$time);
     
-      $studentNumRows = $getStudentView->studentInfoRowsById($studentId);
-    
-      if($studentNumRows==0){
-        $output['error'] = true;
-        $output['message'] = 'User does not exist';
-        $output['data'] = 'Invalid user id';
-      }elseif($studentNumRows>1){
-        $output['error'] = true;
-        $output['message'] = 'More than one exists having same id';
-        $output['data'] = 'Please contact backend engineer';
-      }else{
-        foreach($studentRow as $row){
-          $response[] = array(
-            'id'=>html_entity_decode($row['id']),
-            'firstName'=>html_entity_decode($row['first_name']),
-            'lastName'=>html_entity_decode($row['last_name']),
-            'guardianName'=>html_entity_decode($row['guardian_name']),
-            'email'=>html_entity_decode($row['email']),
-            'phoneNumber'=>html_entity_decode($row['phone_num']),
-            'address'=>html_entity_decode($row['address'])
-          );
-        }  
-        $response = (object) $response;
-      
+      if($insertEducation){
         $output['error'] = false;
-        $output['message'] = 'Success';
-        $output['data'] = $response;  
+        $output['message'] = 'Successfully added new education entry';
+        $output['data'] = 'Success: '.$insertEducation;
+      }else{      
+        $output['error'] = true;
+        $output['message'] = 'Oops! An error occured';
+        $output['data'] = $insertEducation;
       }
       
     }catch(Exception $e){
       $errorMessage = $e->getMessage();
     
       $output['error'] = true;
-      $output['message'] = $errorMessage;
-      $output['data'] = 'An error occured';  
-    
+      $output['message'] = 'An error occured';
+      $output['data'] = $errorMessage;  
     }
   break;
 
   /* update education entry of applicant */
   case 'edit-education-entry':
 
-    $studentId = $data->studentId;
-    $firstName = $data->firstName;
-    $lastName = $data->lastName;
-    $guardianName = $data->guardianName;
-    $email = $data->email;
-    $phoneNum = $data->phoneNumber;
-    $address = $data->address;
-    
-    try{
-      $getStudentView = new GetStudentView();
-      $studentNumRows = $getStudentView->studentInfoRowsById($studentId);
-    
-      if($studentNumRows==0){
-        $output['error'] = true;
-        $output['message'] = 'User does not exist';
-        $output['data'] = 'Invalid user id';
-      }elseif($studentNumRows>1){
-        $output['error'] = true;
-        $output['message'] = 'More than one exists having same id';
-        $output['data'] = 'Please contact backend engineer';
-      }else{
-        $getStudentContr = new GetStudentContr();
-        $updateStudentRow = $getStudentContr->editStudentInfoById($firstName,$lastName,$guardianName,$address, $phoneNum, $email, $studentId);  
-        if($updateStudentRow){
+    $editId = $data->editId;
+    $schoolName = $data->schoolName;
+    $startDate = $data->startDate;
+    $endDate = $data->endDate;
+    $deleted = 'no';
+
+     try{
+      $educationView = new EducationView();
+      $eduNumRows = $educationView->educationByIdNumRows($editId);
+
+      if($eduNumRows==1){
+        $educationContr = new EducationContr();
+        $editEducation = $educationContr->editEducationInfo($schoolName,$startDate,$endDate,$date,$time,$editId);
+
+        if($editEducation){
           $output['error'] = false;
-          $output['message'] = 'Your personal information was successfully updated';
+          $output['message'] = 'That entry was successfully updated';
           $output['data'] = 'Successfully updated';
         }else{
           $output['error'] = true;
           $output['message'] = 'Failed to update. Database error';
           $output['data'] = 'Database execution error';
         }
+      }else{
+        $output['error'] = true;
+        $output['message'] = 'That entry does not exist';
+        $output['data'] = 'That data does not exist';
       }
       
     }catch(Exception $e){
@@ -109,24 +93,67 @@ switch($actionType){
       $output['message'] = $errorMessage;
       $output['data'] = 'An error occured';  
     }
+
+  break;
+  
+  case 'delete-education-entry':
+    $deleteId = $data->deleteId;
+    $deleted = 'no';
+
+     try{
+      $educationView = new EducationView();
+      $eduNumRows = $educationView->educationByIdNumRows($deleteId);
+
+      if($eduNumRows==1){
+        $educationContr = new EducationContr();
+        $deleteEducation = $educationContr->removeEducationInfo($date,$time,$deleteId);
+
+        if($deleteEducation){
+          $output['error'] = false;
+          $output['message'] = 'That entry was successfully deleted';
+          $output['data'] = 'Successfully deleted';
+        }else{
+          $output['error'] = true;
+          $output['message'] = 'Failed to delete. Database error';
+          $output['data'] = 'Database execution error';
+        }
+      }else{
+        $output['error'] = true;
+        $output['message'] = 'That entry does not exist';
+        $output['data'] = 'That data does not exist';
+      }
+      
+    }catch(Exception $e){
+      $errorMessage = $e->getMessage();
+    
+      $output['error'] = true;
+      $output['message'] = $errorMessage;
+      $output['data'] = 'An error occured';  
+    }
+    
   break;
   
   case 'get-education-data':
   
   $studentId = $data->studentId;
 
-  $getEducationView = new GetEducationView();
-  $eduRow = $getEducationView->studentEducation($studentId);
+  $educationView = new EducationView();
+  $eduRow = $educationView->studentEducation($studentId);
 
-  foreach($eduRow as $row){
-    $response[] = array(
-      'id'=>html_entity_decode($row['id']),
-      'userId'=>html_entity_decode($row['user_id']),
-      'schoolName'=>html_entity_decode($row['school_name']),
-      'startDate'=>html_entity_decode($row['start_date']),
-      'endDate'=>html_entity_decode($row['end_date'])
-    );
-  }  
+  $eduCount = $educationView->studentEducationNumRows($studentId);
+
+  $response = [];
+  if($eduCount>0){
+    foreach($eduRow as $row){
+      $response[] = array(
+        'id'=>html_entity_decode($row['id']),
+        'userId'=>html_entity_decode($row['user_id']),
+        'schoolName'=>html_entity_decode($row['school_name']),
+        'startDate'=>html_entity_decode($row['start_date']),
+        'endDate'=>html_entity_decode($row['end_date'])
+      );
+    }  
+  }
   //$response = (object) $response;
 
   $output['error'] = false ;

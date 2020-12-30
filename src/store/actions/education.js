@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export const FETCH_EDUCATION_DATA = 'FETCH_EDUCATION_DATA'
+export const REMOVE_EDUCATION_DATA = 'REMOVE_EDUCATION_DATA'
 
 export const fetchEducationData = (studentId) =>{
   return async dispatch => {
@@ -18,7 +19,6 @@ export const fetchEducationData = (studentId) =>{
         data: values
       })
       const resData  = await res.data;
-      //console.log(resData)
       dispatch({
         type:FETCH_EDUCATION_DATA,
         educationData:resData
@@ -27,5 +27,12 @@ export const fetchEducationData = (studentId) =>{
     }catch(error){
       throw error;
     }    
+  }
+}
+
+export const removeEducationData = (id) =>{
+  return {
+    type:REMOVE_EDUCATION_DATA,
+    eduId:id
   }
 }

@@ -224,7 +224,7 @@ const PersonalInfo = () =>{
                       </div>
 
                       <button 
-                        className="btn btn-light float-right" 
+                        className="btn btn-outline-primary float-right" 
                         type="submit" 
                         disabled={isSubmitting}
                       >

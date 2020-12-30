@@ -1,9 +1,9 @@
 <?php
   require_once("model.class.php");
   //---------------------------------------------//
-  //  Get Student View
+  //  Student View
   //---------------------------------------------//
-  class GetStudentView extends GetStudentModel{
+  class StudentView extends StudentModel{
     public $id;
     public $firstName;
     public $lastName;
@@ -46,10 +46,26 @@
   //---------------------------------------------//
   //  Get Education View
   //---------------------------------------------//
-  class GetEducationView extends GetEducationModel{
+  class EducationView extends EducationModel{
     public function studentEducation($userId){  
       try{
         $row = $this->getEducationInfo($userId);
+        return $row;  
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    public function studentEducationNumRows($userId){
+      try{
+        $row = $this->getEducationInfoRows($userId);
+        return $row;  
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    public function educationByIdNumRows($id){
+      try{
+        $row = $this->getEducationByIdRows($id);
         return $row;  
       }catch(Exception $e){
         throw $e;
