@@ -315,8 +315,11 @@ a.logout:hover {
 .education-card-body .add-button{
   margin-bottom: 10px;
 }
-.edu-action{
+.edu-action, .docs-action{
   cursor:pointer;
+}
+.docs-action a:hover{
+  text-decoration: underline;
 }
 /* ---------------------------------
   GENERAL 

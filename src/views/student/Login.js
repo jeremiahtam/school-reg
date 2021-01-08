@@ -2,44 +2,45 @@ import React,{useState} from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {Link, useHistory} from "react-router-dom";
+import axios from 'axios'
 
 const Login =()=>{
   const history = useHistory();
   /* login errors returned from the backend */
   const [loginErrorMessage, setLoginErrorMessage] = useState('')
-  const loginValidationApi = (values, setSubmitting)=>{
+  const loginValidationApi =async (values, setSubmitting)=>{
     /* make api call to login to user account */
-    fetch('http://localhost/school-reg/src/api/login.php',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(values, null, 2)
-    })
-    .then(res=>res.json())
-    .then(resData=>{
-      /* if there is an authentication error */
-      if(resData.error===true){
-        setSubmitting(false);
-        setLoginErrorMessage(resData.message)
-      }else if(resData.error===false){
-        /*  empty the error message */
-        setLoginErrorMessage('')
-        /* get the token and userType and save it in localStorage */
-        const storeLocally = {
-          'loginToken':resData.jwt,
-          'userType':resData.userType
-        }
-        const loginInfo = JSON.stringify(storeLocally);
-        localStorage.setItem('loginInfo',loginInfo)
-        /* redirect to PersonalInfo.js */
-        history.push('/student/personal-info')
-      }
-    })
-    .catch(error=>{
+    try{
+      const res = await axios({
+        url:'http://localhost/school-reg/src/api/login.php',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: values
+      })
+      const resData  = await res.data    
+        /* if there is an authentication error */
+        if(resData.error===true){
+          setSubmitting(false);
+          setLoginErrorMessage(resData.message)
+        }else if(resData.error===false){
+          /*  empty the error message */
+          setLoginErrorMessage('')
+          /* get the token and userType and save it in localStorage */
+          const storeLocally = {
+            'loginToken':resData.jwt,
+            'userType':resData.userType
+          }
+          const loginInfo = JSON.stringify(storeLocally);
+          localStorage.setItem('loginInfo',loginInfo)
+          /* redirect to PersonalInfo.js */
+          history.push('/student/personal-info')
+        }  
+    }catch(error){
       setSubmitting(false);
       setLoginErrorMessage('An error occured. Try again.')
-    })
+    }
     setSubmitting(false);
   }
   return(
@@ -66,7 +67,7 @@ const Login =()=>{
               onSubmit={(values, { setSubmitting }) => {  
                 //add userType to the form data to be sent
                 values = {...values,...{'userType':'student'}}
-                setTimeout(loginValidationApi(values,setSubmitting), 400);
+                loginValidationApi(values,setSubmitting);
               }
             }
             >
@@ -99,7 +100,7 @@ const Login =()=>{
                 {isSubmitting ?
                 (
                   <>
-                  <span className="spinner-border spinner-border" role="status" aria-hidden="true"></span>   
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>   
                   <span> Processing..</span> 
                 </>
                 ):(" Login")}

@@ -49,7 +49,7 @@ switch($actionType){
       $errorMessage = $e->getMessage();
     
       $output['error'] = true;
-      $output['message'] = 'An error occured';
+      $output['message'] = 'Technical error. Try again later';
       $output['data'] = $errorMessage;  
     }
   break;
@@ -90,8 +90,8 @@ switch($actionType){
       $errorMessage = $e->getMessage();
     
       $output['error'] = true;
-      $output['message'] = $errorMessage;
-      $output['data'] = 'An error occured';  
+      $output['message'] = 'Technical error. Try again later';
+      $output['data'] = $errorMessage;  
     }
 
   break;
@@ -127,8 +127,8 @@ switch($actionType){
       $errorMessage = $e->getMessage();
     
       $output['error'] = true;
-      $output['message'] = $errorMessage;
-      $output['data'] = 'An error occured';  
+      $output['message'] = 'Technical error. Try again later';
+      $output['data'] = $errorMessage;  
     }
     
   break;

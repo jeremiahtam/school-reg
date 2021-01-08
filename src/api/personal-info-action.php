@@ -19,7 +19,7 @@ $time = date('H:i:s');
 $actionType = '';
 $data = json_decode(file_get_contents("php://input"));
 $actionType = $data->actionType;
-json_encode($actionType);
+
 /* check the action type */
 switch($actionType){
   /* if action type is to retrieve personal info */
@@ -109,8 +109,8 @@ switch($actionType){
       $errorMessage = $e->getMessage();
     
       $output['error'] = true;
-      $output['message'] = $errorMessage;
-      $output['data'] = 'An error occured';  
+      $output['message'] = 'Technical error. Try again later';
+      $output['data'] = $errorMessage;  
     }
   break;
 

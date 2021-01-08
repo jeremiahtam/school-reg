@@ -72,4 +72,47 @@
       }
     }
   }
+
+  //---------------------------------------------//
+  //  UploadDocument View
+  //---------------------------------------------//
+  class DocumentView extends DocumentModel{
+
+    public function docExistByIdNumRows($id){
+      try{
+        $row = $this->checkDocExistByIdNumRows($id);
+        return $row;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+
+    public function fetchDocList($studentId){
+      try{
+        $row = $this->getDocList($studentId);
+        return $row;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    public function fetchDocListNumRows($studentId){
+      try{
+        $row = $this->getDocListNumRows($studentId);
+        return $row;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+
+    public function docExistNumRows($studentId,$fileCategory){
+      try{
+        $row = $this->checkDocExistNumRows($studentId,$fileCategory);
+        return $row;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+
+  }
+
 ?>

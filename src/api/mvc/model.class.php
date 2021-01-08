@@ -43,7 +43,7 @@
   //------------------------------------------
   //  Admin Info 
   //----------------------------------------//
-  class GetAdminModel extends DatabaseService{
+  class AdminModel extends DatabaseService{
     protected function getAdminInfo($email){
       $sql = "SELECT * FROM _admin WHERE email = ? AND deleted=? LIMIT 0,1";
       $stmt = $this->getConnection()->prepare($sql);
@@ -121,4 +121,76 @@
       return $result;
     }
   }
+  
+  //------------------------------------------
+  //  Document Info 
+  //----------------------------------------//
+  class DocumentModel extends DatabaseService{
+
+    protected function checkDocExistByIdNumRows($id){
+      try{
+        $sql = "SELECT COUNT(*) FROM upload_documents WHERE id = ? AND deleted=?";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute([$id,'no']);
+        $result = $stmt->fetchColumn();
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    protected function deleteDocument($date,$time,$deleteId){
+      try{
+        $sql = "UPDATE upload_documents SET deleted=?,date=?,time=? WHERE id=?";
+        $stmt = $this->getConnection()->prepare($sql);
+        $result = $stmt->execute(['yes',$date,$time,$deleteId]);
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    protected function insertDocument($studentId,$fileName,$fileCategory,$fileCategoryName,$deleted,$date,$time){
+      try{
+        $sql = "INSERT INTO upload_documents(student_id,file_name,file_category,file_category_name,deleted,date,time) VALUES (?,?,?,?,?,?,?)";
+        $stmt = $this->getConnection()->prepare($sql);
+        $result = $stmt->execute([$studentId,$fileName,$fileCategory,$fileCategoryName,$deleted,$date,$time]);
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    protected function checkDocExistNumRows($studentId,$fileCategory){
+      try{
+        $sql = "SELECT COUNT(*) FROM upload_documents WHERE student_id = ? AND file_category=? AND deleted=?";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute([$studentId, $fileCategory,'no']);
+        $result = $stmt->fetchColumn();
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    protected function getDocList($studentId){
+      try{
+        $sql = "SELECT * FROM upload_documents WHERE student_id = ? AND deleted=?";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute([$studentId,'no']);
+        $result = $stmt->fetchAll();
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+    protected function getDocListNumRows($studentId){
+      try{
+        $sql = "SELECT COUNT(*) FROM upload_documents WHERE student_id = ? AND deleted=?";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute([$studentId,'no']);
+        $result = $stmt->fetchColumn();
+        return $result;
+      }catch(Exception $e){
+        throw $e;
+      }
+    }
+  }
+  
   ?>

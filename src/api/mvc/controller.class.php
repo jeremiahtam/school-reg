@@ -20,3 +20,14 @@
       return $this->deleteEducationInfo($date,$time,$deleteId);
     }
   }
+
+  class DocumentContr extends DocumentModel{
+    public function addDocument($studentId,$fileName,$fileCategory,$fileCategoryName,$deleted,$date,$time){
+      return $this->insertDocument($studentId,$fileName,$fileCategory,$fileCategoryName,$deleted,$date,$time);
+    }
+    public function removeDocument($date,$time,$deleteId){
+      return $this->deleteDocument($date,$time,$deleteId);
+    }
+  }
+
+?>
