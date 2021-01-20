@@ -248,22 +248,9 @@ function UploadDocuments(){
                     return(
                       <tr key={docs.id}>
                         <td>{index + 1}</td>
-                        <td>{docs.fileCategory}</td>
+                        <td>{docs.fileCategoryName}</td>
                         <td>
-                          <div className='docs-action'
-                            // onClick={()=>{
-                            //   axios({
-                            //     url:`http://localhost/school-reg/src/uploadedDocs/`+docs.fileName, 
-                            //     method: 'POST',
-                            //     headers: {
-                            //       'Content-Type': 'application/json'
-                            //     },
-                            //     responseType: 'blob',
-                            //   }).then(res => {
-                            //     fileDownload(res.data, docs.fileCategoryName);
-                            //   });
-                            // }}
-                          >
+                          <div className='docs-action'>
                             <a href={`http://localhost/school-reg/src/uploadedDocs/`+docs.fileName}>Download</a>
                           </div>
                         </td>
