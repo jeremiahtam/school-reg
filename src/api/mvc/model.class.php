@@ -45,7 +45,7 @@
   //----------------------------------------//
   class AdminModel extends DatabaseService{
     protected function getAdminInfo($email){
-      $sql = "SELECT * FROM _admin WHERE email = ? AND deleted=? LIMIT 0,1";
+      $sql = "SELECT * FROM _admin WHERE email=? AND deleted=? LIMIT 0,1";
       $stmt = $this->getConnection()->prepare($sql);
       $stmt->execute([$email,'no']);
       $result = $stmt->fetch();

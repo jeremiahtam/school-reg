@@ -104,13 +104,12 @@ function UploadDocuments(){
           setSubmitting(false)
           setUploadDocFormData(resData)
           setUploadDocFormFeedback(true)
-          return resData
         }else{
           setSubmitting(false)    
           setUploadDocFormData(resData)
           setUploadDocFormFeedback(true)
-          return resData
         }  
+        return resData
       }catch(error){
         setSubmitting(false);
         return {

@@ -19,8 +19,9 @@ const Login =()=>{
         },
         data: values
       })
-      const resData  = await res.data    
-        /* if there is an authentication error */
+      const resData  = await res.data
+      console.log(resData)
+      /* if there is an authentication error */
         if(resData.error===true){
           setSubmitting(false);
           setLoginErrorMessage(resData.message)
@@ -40,6 +41,7 @@ const Login =()=>{
     }catch(error){
       setSubmitting(false);
       setLoginErrorMessage('An error occured. Try again.')
+      console.log(error)
     }
     setSubmitting(false);
   }
@@ -59,7 +61,7 @@ const Login =()=>{
               validationSchema={Yup.object({
                 email: Yup.string().email('Invalid email address').required('Email cannot be empty!'),
                 password: Yup.string()
-                  .max(20, 'Must be 20 characters or less')
+                  .max(30, 'Must be 30 characters or less')
                   .min(8,"Must be more than eight characters")
                   .required('Password cannot be empty'),
               })}
